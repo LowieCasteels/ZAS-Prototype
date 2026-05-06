@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZAS | Book Appointment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <!-- Re-use sidebar from dashboard -->
+        <div class="logo-area">🏥 ZAS <span>Connect</span></div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="appointments.html" class="active">Appointments</a></li>
+            <li><a href="records.html">Medical Records</a></li>
+            <li><a href="#">Messages</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-wrapper">
+        <header class="header-row">
+            <h1>Schedule Care</h1>
+        </header>
+
+        <div class="content-card booking-wizard">
+            <div class="search-bar">
+                <div class="input-group">
+                    <label>Specialty</label>
+                    <select>
+                        <option>Dermatology</option>
+                        <option>Cardiology</option>
+                        <option>Physiotherapy</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Preferred Campus</label>
+                    <select>
+                        <option>Any Campus</option>
+                        <option>ZAS Cadix</option>
+                        <option>ZAS Middelheim</option>
+                        <option>ZAS Augustinus</option>
+                    </select>
+                </div>
+                <button class="btn-primary">Find Available Slots</button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Specialty</th>
+                        <th>Earliest Slot</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dr. Sarah Peeters</strong></td>
+                        <td>Neurology</td>
+                        <td>Tomorrow, 10:15</td>
+                        <td><button class="btn-sm">Book Now</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dr. Marc Dubois</strong></td>
+                        <td>Dermatology</td>
+                        <td>Wed, May 12</td>
+                        <td><button class="btn-sm">Book Now</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
