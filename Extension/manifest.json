@@ -5,6 +5,7 @@
   "description": "Quickly access Guides & Help for the ZAS Connect portal.",
   "action": {
     "default_popup": "popup.html",
-    "default_title": "ZAS Connect Guides"
+    "default_title": "ZAS Connect Guides",
+    "default_icon": "logo.png"
   }
 }
