@@ -9,6 +9,7 @@
 <body>
     <div class="container">
         <!-- Sidebar Navigation -->
+         <button class="menu-toggle" onclick="toggleSidebar()">></button>
         <nav class="sidebar">
             <div class="logo">ZAS <span>Connect</span></div>
             <ul>
@@ -71,48 +72,144 @@
                 </div>
             </section>
 
-            <!-- PAGE 3: MEDICAL RECORDS -->
-            <section id="records" class="page">
-                <header>
-                    <h1>Medical Records</h1>
-                </header>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Provider</th>
-                            <th>Download</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>03/05/2026</td>
-                            <td>Lab Results</td>
-                            <td>ZAS Cadix</td>
-                            <td><button class="btn-sm">PDF</button></td>
-                        </tr>
-                        <tr>
-                            <td>12/01/2026</td>
-                            <td>X-Ray Image</td>
-                            <td>ZAS Middelheim</td>
-                            <td><button class="btn-sm">View</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+          <!-- PAGE 3: MEDICAL RECORDS -->
+        <section id="records" class="page">
+            <header>
+                <h1>Medical Records</h1>
+                <button class="btn" id="add-record-btn">+ Add Record</button>
+            </header>
 
+            <!-- Add Record Modal -->
+            <div id="record-modal" style="display:none;">
+                <div class="modal-box">
+                    <h2>Add Medical Record</h2>
+                    <label>Date</label>
+                    <input type="date" id="rec-date" />
+                    <label>Hour</label>
+                    <input type="time" id="rec-hour" />
+                    <label>Type</label>
+                    <select id="rec-type">
+                        <option value="">-- Select type --</option>
+                        <option>Lab Results</option>
+                        <option>X-Ray Image</option>
+                        <option>Prescription</option>
+                        <option>Consultation Notes</option>
+                        <option>Vaccination</option>
+                    </select>
+                    <label>Provider</label>
+                    <input type="text" id="rec-provider" placeholder="e.g. ZAS Cadix" />
+                    <label>Format</label>
+                    <select id="rec-format">
+                        <option value="PDF">PDF</option>
+                        <option value="View">View</option>
+                    </select>
+                    <div class="modal-actions">
+                        <button class="btn" id="rec-cancel">Cancel</button>
+                        <button class="btn" id="rec-save">Save Record</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ✅ Table was missing -->
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Hour</th>
+                        <th>Type</th>
+                        <th>Provider</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody id="records-tbody">
+                    <!-- Existing records -->
+                    <tr>
+                        <td>03/05/2026</td>
+                        <td>15:00</td>
+                        <td>Lab Results</td>
+                        <td>ZAS Cadix</td>
+                        <td><button class="btn-sm">PDF</button></td>
+                    </tr>
+                    <tr>
+                        <td>12/01/2026</td>
+                        <td>13:00</td>
+                        <td>X-Ray Image</td>
+                        <td>ZAS Middelheim</td>
+                        <td><button class="btn-sm">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
             <!-- PAGE 4: MESSAGES -->
             <section id="messages" class="page">
                 <header>
                     <h1>Secure Messaging</h1>
+                    <p>Here, you can text the developper for any question or bug, you want report</p>
                 </header>
-                <div class="message-placeholder">
-                    <p>Your inbox is empty. Contact your care team via the "New Message" button.</p>
-                    <button class="btn primary">New Message</button>
-                </div>
-            </section>
 
+                <!-- Inbox -->
+                <div id="inbox">
+                    <p id="empty-note">Your inbox is empty. Contact your care team via the "New Message" button.</p>
+                    <div id="message-list"></div>
+                </div>
+
+                <!-- Compose Modal -->
+                <div id="compose-modal" style="display:none;">
+                    <div class="modal-box">
+                        <h2>New Message</h2>
+                        <label>To</label>
+                        <input type="text" id="msg-to" placeholder="e.g. Dr. Smith" />
+                        <label>Subject</label>
+                        <input type="text" id="msg-subject" placeholder="Subject" />
+                        <label>Message</label>
+                        <textarea id="msg-body" rows="5" placeholder="Write your message..."></textarea>
+                        <div class="modal-actions">
+                            <button class="btn secondary" id="cancel-btn">Cancel</button>
+                            <button class="btn primary" id="send-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn primary" id="new-msg-btn">New Message</button>
+            </section>
+           
+           <!-- Chatbot at the bottom -->
+            <div id="chat-circle" onclick="toggleChat()">
+                <img src="./img/bubble-chat.png" alt="">
+            </div>
+            <section id="chatbot" class="card">
+                <div>
+                   <h2>Assistant</h2> 
+                   <img src="./img/close.png" alt="" class="closeImg" onclick="toggleChat()">
+                </div>
+            
+
+            <div id="chat"></div>
+
+            <div class="chat-input">
+                <input id="input" placeholder="Ask a question..." />
+                <button onclick="send()">Send</button>
+            </div>
+
+            <script>
+                async function send() {
+                const input = document.getElementById("input").value;
+
+                const res = await fetch("http://localhost:3000/api/chat", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ message: input })
+                });
+
+                const data = await res.json();
+
+                document.getElementById("chat").innerHTML += `
+                    <div class="msg user"><b>You:</b> ${input}</div>
+                    <div class="msg bot"><b>Bot:</b> ${data.reply}</div>
+                `;
+                }
+            </script>
+            </section>
         </main>
     </div>
     <script src="script.js"></script>
