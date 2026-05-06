@@ -149,6 +149,7 @@ header p { color: #7f8c8d; margin-bottom: 30px; }
 header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
@@ -183,6 +184,19 @@ header {
     padding: 6px 14px;
 }
 .btn.secondary:hover { background: var(--zas-light); }
+
+.btn-sm {
+    background: var(--zas-light);
+    color: var(--zas-blue);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-sm:hover { background: var(--zas-blue); color: white; border-color: var(--zas-blue); }
 
 .guide-steps li { margin-bottom: 8px; line-height: 1.4; }
 
@@ -281,7 +295,8 @@ header {
 }
 
 /* Overlay */
-#compose-modal {
+#compose-modal,
+#record-modal {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
@@ -414,7 +429,7 @@ header {
 
 .learn-more-link { display: inline-block; margin-top: 8px; color: var(--accent); font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; }
 .learn-more-link:hover { text-decoration: underline; }
-.extension-tip { margin-top: 15px !important; font-size: 0.85rem !important; color: var(--zas-blue) !important; background: rgba(0, 85, 150, 0.05); padding: 8px; border-radius: 6px; }
+.extension-tip { margin-top: 15px !important; font-size: 0.85rem !important; color: #ff4757 !important; background: rgba(255, 71, 87, 0.1); padding: 8px; border-radius: 6px; }
 
 /* Custom Checkbox */
 #read-checkbox,
