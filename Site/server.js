@@ -11,16 +11,16 @@ app.use(express.json());
 // 1. Define Intents (Can be moved to a database or config file later)
 const INTENTS = [
   {
-    keywords: ["patient", "registration", "new"],
-    reply: "To register a new patient, navigate to the 'Admission' module and select 'Register New Patient'."
+    keywords: ["patient", "search", "find"],
+    reply: "To find a patient, navigate to the 'Patient Directory' module and search by Name or ID."
   },
   {
     keywords: ["medical record", "emr", "report"],
-    reply: "Electronic Medical Records (EMR) can be accessed via the 'Clinical' tab. Ensure you have the proper authorization level."
+    reply: "Patient Records can be accessed and updated via the 'Patient Records' tab. Ensure you have the proper authorization level."
   },
   {
-    keywords: ["password", "login", "access"],
-    reply: "Password resets must be requested via the ZAS IT Portal or by calling the internal helpdesk at ext. 555."
+    keywords: ["colleague", "message", "contact"],
+    reply: "You can exchange data with other staff via the 'Secure Messaging' tab."
   }
 ];
 

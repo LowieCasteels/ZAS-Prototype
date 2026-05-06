@@ -1,0 +1,67 @@
+body {
+    font-family: 'Inter', sans-serif;
+    width: 320px;
+    margin: 0;
+    padding: 15px;
+    background-color: #f0f4f8;
+    color: #2c3e50;
+}
+.header {
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #dce3e8;
+    padding-bottom: 10px;
+}
+.header h2 {
+    margin: 0;
+    color: #005596;
+}
+.header h2 span {
+    font-weight: 300;
+}
+.header p {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    color: #7f8c8d;
+}
+.guide-item {
+    background: white;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #dce3e8;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.guide-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    color: #005596;
+}
+.guide-item p {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+    line-height: 1.4;
+}
+.toggle-btn {
+    background: transparent;
+    color: #00a8e8;
+    border: 1px solid #00a8e8;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 100%;
+    transition: 0.2s;
+}
+.toggle-btn:hover {
+    background: #e6f7ff;
+}
+.steps {
+    display: none;
+    margin: 10px 0 0 0;
+    padding-left: 20px;
+    font-size: 12px;
+    border-top: 1px solid #dce3e8;
+    padding-top: 10px;
+}
+.steps li { margin-bottom: 6px; }

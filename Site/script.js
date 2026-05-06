@@ -1,30 +1,7 @@
-// Data Simulation Engine
-const ZAS_STORE = {
-    patient: {
-        id: "99281",
-        name: "Alex Janssens",
-        notifications: 2
-    },
-    async fetchRecords() {
-        // Mocking an API call to a FHIR server
-        return [
-            { id: 1, date: "2026-05-01", type: "MRI Scan", lab: "Radiology", file: "mri_01.dicom" },
-            { id: 2, date: "2026-04-15", type: "Blood Test", lab: "Hematology", file: "blood_04.pdf" }
-        ];
-    },
-    init() {
-        console.log("ZAS Advanced Core Initialized");
-        this.renderUserSession();
-    },
-    renderUserSession() {
-        const badge = document.querySelector('.user-badge');
-        if(badge) badge.innerText = `${this.patient.name} (ID: ${this.patient.id})`;
-    }
-};
+document.addEventListener('DOMContentLoaded', () => {
+    const navItems = document.querySelectorAll('.nav-item');
+    const pages = document.querySelectorAll('.page');
 
-<<<<<<< HEAD
-document.addEventListener('DOMContentLoaded', () => ZAS_STORE.init());
-=======
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             const targetPage = item.getAttribute('data-page');
@@ -117,13 +94,13 @@ recCancel.addEventListener('click', () => {
 
 // Save record
 recSave.addEventListener('click', () => {
+    const patientId = document.getElementById('rec-patient-id').value.trim();
     const date     = document.getElementById('rec-date').value;
     const hour = document.getElementById('rec-hour').value;
     const type     = document.getElementById('rec-type').value;
-    const provider = document.getElementById('rec-provider').value.trim();
-    const format   = document.getElementById('rec-format').value;
+    const notes     = document.getElementById('rec-notes').value.trim();
 
-    if (!date || !type || !provider || !hour) {
+    if (!patientId || !date || !type || !hour) {
         alert('Please fill in all fields.');
         return;
     }
@@ -137,9 +114,10 @@ recSave.addEventListener('click', () => {
     row.innerHTML = `
         <td>${formatted}</td>
         <td>${hourFormatted}</td>
+        <td>${patientId}</td>
         <td>${type}</td>
-        <td>${provider}</td>
-        <td><button class="btn-sm">${format}</button></td>
+        <td>You</td>
+        <td><button class="btn-sm">View</button></td>
     `;
 
    const recordsTbody = document.getElementById('records-tbody');
@@ -156,15 +134,15 @@ recSave.addEventListener('click', () => {
 });
 
 function clearRecordForm() {
+    document.getElementById('rec-patient-id').value = '';
     document.getElementById('rec-date').value = '';
     document.getElementById('rec-type').value = '';
-    document.getElementById('rec-provider').value = '';
-    document.getElementById('rec-format').value = 'PDF';
+    document.getElementById('rec-notes').value = '';
 }
 
 function toggleChat() {
         const chatWindow = document.getElementById("chatbot");
-        if (chatWindow.style.display === "none") {
+        if (chatWindow.style.display !== "flex") {
             chatWindow.style.display = "flex";
         } else {
             chatWindow.style.display = "none";
@@ -188,4 +166,82 @@ document.addEventListener('click', function(event) {
         }
     }
 });
->>>>>>> origin/benjamin_branch
+
+// --- Login & What's New Carousel ---
+function handleLogin() {
+    // Hide login screen
+    document.getElementById('login-screen').style.display = 'none';
+    // Show What's New modal
+    document.getElementById('whats-new-modal').style.display = 'flex';
+    showSlides(0); // Initialize carousel on first slide
+}
+
+function closeWhatsNew() {
+    document.getElementById('whats-new-modal').style.display = 'none';
+}
+
+let slideIndex = 0;
+
+function moveSlide(n) {
+    showSlides(slideIndex += n);
+}
+
+function setSlide(n) {
+    showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+    const slides = document.getElementsByClassName("slide");
+    const dots = document.getElementsByClassName("dot");
+    
+    if (n >= slides.length) { slideIndex = 0 }    
+    if (n < 0) { slideIndex = slides.length - 1 }
+    
+    for (let i = 0; i < slides.length; i++) { slides[i].classList.remove("active"); }
+    for (let i = 0; i < dots.length; i++) { dots[i].classList.remove("active"); }
+    
+    if (slides[slideIndex]) slides[slideIndex].classList.add("active");  
+    if (dots[slideIndex]) dots[slideIndex].classList.add("active");
+}
+
+function toggleGuideSteps(guideId) {
+    const card = document.getElementById(guideId);
+    if (!card) return;
+    
+    const stepsDiv = card.querySelector('.guide-steps');
+    const btn = card.querySelector('.btn.secondary');
+    if (!stepsDiv) return;
+    
+    if (stepsDiv.style.display !== 'block') {
+        stepsDiv.style.display = 'block';
+        if (btn) btn.innerText = 'Hide Steps';
+    } else {
+        stepsDiv.style.display = 'none';
+        if (btn) btn.innerText = 'Show Steps';
+    }
+}
+
+function openGuide(guideId) {
+    closeWhatsNew();
+    // Switch to the guides page by simulating a click on the navigation item
+    const guidesNav = document.querySelector('[data-page="guides"]');
+    if (guidesNav) guidesNav.click();
+    
+    // Scroll to and highlight the specific guide temporarily
+    setTimeout(() => {
+        const card = document.getElementById(guideId);
+        if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('highlight');
+            setTimeout(() => card.classList.remove('highlight'), 3000); // Remove highlight after 3 seconds
+            
+            // Auto-expand the steps if they are hidden
+            const stepsDiv = card.querySelector('.guide-steps');
+            const btn = card.querySelector('.btn.secondary');
+            if (stepsDiv && stepsDiv.style.display !== 'block') {
+                stepsDiv.style.display = 'block';
+                if (btn) btn.innerText = 'Hide Steps';
+            }
+        }
+    }, 100);
+}

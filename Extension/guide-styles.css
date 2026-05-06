@@ -1,0 +1,50 @@
+#zas-guide-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: #ffffff;
+    border-left: 5px solid #005596;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 9999;
+    font-family: sans-serif;
+    animation: slideIn 0.5s ease-out;
+}
+
+.guide-header {
+    background: #f8fafc;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    color: #005596;
+}
+
+.guide-body {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #334155;
+}
+
+.guide-footer {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+}
+
+#guide-dismiss {
+    background: #005596;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
