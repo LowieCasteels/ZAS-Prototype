@@ -291,38 +291,34 @@
             <div id="chat-circle" onclick="toggleChat()">
                 <img src="./img/bubble-chat.png" alt="">
             </div>
-            <section id="chatbot" class="card">
-                <div>
-                   <h2>Assistant</h2> 
-                   <img src="./img/close.png" alt="" class="closeImg" onclick="toggleChat()">
-                </div>
-            
-
-            <div id="chat"></div>
-
-            <div class="chat-input">
-                <input id="input" placeholder="Ask a question..." />
-                <button onclick="send()">Send</button>
+             <section id="chatbot" class="card">
+            <div>
+                <h2>Assistant</h2>
+                <img src="./img/close.png" alt="Close" class="closeImg" onclick="toggleChat()">
             </div>
 
-            <script>
-                async function send() {
-                const input = document.getElementById("input").value;
+            <div id="chat">
+                <div class="msg-welcome">
+                <strong>Hello, how can I help you?</strong>
+                Select a quick action below or type your question.
+                </div>
+            </div>
 
-                const res = await fetch("http://localhost:3000/api/chat", {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({ message: input })
-                });
+            <div class="chat-quick">
+                <div class="q-label">Quick actions</div>
+                <div class="q-tabs">
+                <button class="q-tab on" data-tab="reports" onclick="switchTab('reports', this)">Reports</button>
+                <button class="q-tab" data-tab="patient" onclick="switchTab('patient', this)">Patient</button>
+                <button class="q-tab" data-tab="meds" onclick="switchTab('meds', this)">Meds</button>
+                <button class="q-tab" data-tab="admin" onclick="switchTab('admin', this)">Admin</button>
+                </div>
+                <div class="q-grid" id="q-grid"></div>
+            </div>
 
-                const data = await res.json();
-
-                document.getElementById("chat").innerHTML += `
-                    <div class="msg user"><b>You:</b> ${input}</div>
-                    <div class="msg bot"><b>Bot:</b> ${data.reply}</div>
-                `;
-                }
-            </script>
+            <div class="chat-input">
+                <input id="input" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') send()" />
+                <button onclick="send()">Send</button>
+            </div>
             </section>
         </main>
     </div>

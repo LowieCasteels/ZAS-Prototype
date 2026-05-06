@@ -245,3 +245,135 @@ function openGuide(guideId) {
         }
     }, 100);
 }
+
+const ACTIONS = {
+  reports: [
+    { icon: '📋', label: 'Patient report',   sub: 'Daily summary',
+      msg: 'Generate a patient daily report',
+      tip: { title: 'Patient report', body: "Tell me the patient's name or ID and I'll generate a complete daily summary including vitals, medications, and care notes." }},
+    { icon: '🔄', label: 'Shift handover',  sub: 'End-of-shift notes',
+      msg: 'Create a shift handover report',
+      tip: { title: 'Shift handover', body: "Give me the ward name, critical patients, and pending tasks. I'll structure your handover notes." }},
+    { icon: '📊', label: 'Ward stats',      sub: 'Occupancy & KPIs',
+      msg: 'Show ward statistics',
+      tip: { title: 'Ward statistics', body: 'Specify the ward and date range. I can show bed occupancy, average stay length, and admission counts.' }},
+    { icon: '⚠️', label: 'Incident report', sub: 'Log an event',
+      msg: 'Help me fill an incident report',
+      tip: { title: 'Incident report', body: "Describe what happened and when. I'll help structure the event, actions taken, and follow-up steps." }},
+  ],
+  patient: [
+    { icon: '🏥', label: 'Admit patient',  sub: 'New admission',
+      msg: 'Start a new patient admission',
+      tip: { title: 'New admission', body: "Provide the patient's name, date of birth, and reason for admission. I'll pre-fill the intake form." }},
+    { icon: '📅', label: 'Schedule exam',  sub: 'Book appointment',
+      msg: 'Schedule a patient examination',
+      tip: { title: 'Schedule exam', body: "Tell me the exam type, preferred date, and patient ID. I'll check availability and book the slot." }},
+    { icon: '📝', label: 'Care plan',      sub: 'View or update',
+      msg: 'Show the care plan for a patient',
+      tip: { title: 'Care plan', body: "Enter the patient ID or name. I can display the current plan or help add objectives and interventions." }},
+    { icon: '🚪', label: 'Discharge',      sub: 'Discharge summary',
+      msg: 'Generate a discharge summary',
+      tip: { title: 'Discharge summary', body: "Give me the patient ID and I'll compile diagnosis, treatments received, medications, and follow-up instructions." }},
+  ],
+  meds: [
+    { icon: '💊', label: 'Medication round', sub: 'Check administration',
+      msg: 'Show pending medication rounds',
+      tip: { title: 'Medication round', body: "Tell me the ward or patient name. I'll list all pending administrations with due times and exact doses." }},
+    { icon: '🔍', label: 'Drug lookup',    sub: 'Dosage & interactions',
+      msg: 'Look up a drug dosage and interactions',
+      tip: { title: 'Drug lookup', body: "Enter the drug name and I'll show standard dosages, contraindications, and potential interactions." }},
+    { icon: '⏰', label: 'Overdue doses',  sub: 'Alert list',
+      msg: 'List overdue medication doses for my ward',
+      tip: { title: 'Overdue doses', body: "Specify the ward to narrow the list. I'll pull all missed administrations and flag the most critical." }},
+    { icon: '🗒️', label: 'Prescription',   sub: 'New or renew',
+      msg: 'Help me write a prescription',
+      tip: { title: 'Prescription', body: "Tell me the drug, patient weight if relevant, and indication. I'll draft the prescription with dosage and frequency." }},
+  ],
+  admin: [
+    { icon: '👥', label: 'Staff schedule',   sub: 'Shifts & rota',
+      msg: "Show today's staff schedule",
+      tip: { title: 'Staff schedule', body: "Specify a ward or role (nurses, doctors) to filter. I can show today's rota or the full week." }},
+    { icon: '🛏️', label: 'Bed availability', sub: 'Current capacity',
+      msg: 'What beds are available right now?',
+      tip: { title: 'Bed availability', body: "I'll show current occupancy by ward and flag beds pending cleaning or maintenance." }},
+    { icon: '🧾', label: 'Billing codes',    sub: 'ICD / procedure',
+      msg: 'Help me find the right billing code',
+      tip: { title: 'Billing codes', body: "Describe the diagnosis or procedure and I'll suggest the matching ICD-10 or CCAM code." }},
+    { icon: '📄', label: 'Protocol',         sub: 'Clinical guidelines',
+      msg: 'Show the clinical protocol',
+      tip: { title: 'Clinical protocol', body: "Name the procedure or condition and I'll retrieve the relevant guideline, steps, and contraindications." }},
+  ],
+};
+
+function renderGrid(tab) {
+  document.getElementById('q-grid').innerHTML = ACTIONS[tab].map((a, i) => `
+    <button class="q-btn" id="qb-${i}" onclick="selectAction('${tab}', ${i})">
+      <span style="font-size:18px">${a.icon}</span>
+      <div>
+        <div class="ql">${a.label}</div>
+        <div class="qs">${a.sub}</div>
+      </div>
+    </button>
+  `).join('');
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.q-tab').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  clearTip();
+  renderGrid(tab);
+}
+
+function clearTip() {
+  document.getElementById('tip-bubble')?.remove();
+  document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+}
+
+function selectAction(tab, i) {
+  const a = ACTIONS[tab][i];
+  clearTip();
+  document.getElementById(`qb-${i}`).classList.add('active');
+
+  const chat = document.getElementById('chat');
+  const tip = document.createElement('div');
+  tip.className = 'bubble-tip';
+  tip.id = 'tip-bubble';
+  tip.innerHTML = `
+    <strong>${a.tip.title}</strong>
+    ${a.tip.body}
+    <span class="tip-send" onclick="sendMsg('${a.msg.replace(/'/g,"\\'")}')">Send this request →</span>
+  `;
+  chat.appendChild(tip);
+  chat.scrollTop = chat.scrollHeight;
+  document.getElementById('input').value = a.msg;
+}
+
+async function sendMsg(text) {
+  if (!text.trim()) return;
+  clearTip();
+  const chat = document.getElementById('chat');
+  document.getElementById('input').value = '';
+
+  chat.innerHTML += `<div class="msg-user">${text}</div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  try {
+    const res = await fetch('http://localhost:3000/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+    const data = await res.json();
+    chat.innerHTML += `<div class="msg-bot">${data.reply}</div>`;
+  } catch {
+    chat.innerHTML += `<div class="msg-bot" style="color:#c0392b">Server unavailable. Please try again.</div>`;
+  }
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function send() {
+  const text = document.getElementById('input').value.trim();
+  if (text) sendMsg(text);
+}
+
+renderGrid('reports');
