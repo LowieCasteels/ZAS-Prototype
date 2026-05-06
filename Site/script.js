@@ -18,6 +18,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            const badge = document.getElementById(`badge-${targetPage}`);
+            if (badge && badge.style.display !== 'none') {
+                badge.style.display = 'none';
+                
+                // Hide all guide sections first
+                ['directory', 'records', 'messages'].forEach(g => {
+                    const el = document.getElementById(`modal-guide-${g}`);
+                    if (el) el.style.display = 'none';
+                });
+                
+                // Show the specific feature guide
+                const specificGuide = document.getElementById(`modal-guide-${targetPage}`);
+                if (specificGuide) {
+                    specificGuide.style.display = 'block';
+                    
+                    // Reset checkbox and button
+                    document.getElementById('quick-guide-checkbox').checked = false;
+                    document.getElementById('quick-guide-close-btn').disabled = true;
+                    
+                    document.getElementById('quick-guide-modal').style.display = 'flex';
+                }
+            }
+
             console.log(`Navigated to: ${targetPage}`);
         });
     });
@@ -171,6 +194,12 @@ document.addEventListener('click', function(event) {
 function handleLogin() {
     // Hide login screen
     document.getElementById('login-screen').style.display = 'none';
+    
+    // Reset popup constraints
+    document.getElementById('read-checkbox').checked = false;
+    document.getElementById('continue-btn').disabled = true;
+    document.getElementById('read-acknowledgement').style.display = 'none';
+
     // Show What's New modal
     document.getElementById('whats-new-modal').style.display = 'flex';
     showSlides(0); // Initialize carousel on first slide
@@ -202,6 +231,23 @@ function showSlides(n) {
     
     if (slides[slideIndex]) slides[slideIndex].classList.add("active");  
     if (dots[slideIndex]) dots[slideIndex].classList.add("active");
+    
+    // Require user to reach the last slide before showing the checkbox
+    if (slideIndex === slides.length - 1) {
+        document.getElementById('read-acknowledgement').style.display = 'block';
+    }
+}
+
+function toggleContinueBtn() {
+    const checkbox = document.getElementById('read-checkbox');
+    const btn = document.getElementById('continue-btn');
+    btn.disabled = !checkbox.checked;
+}
+
+function toggleQuickGuideBtn() {
+    const checkbox = document.getElementById('quick-guide-checkbox');
+    const btn = document.getElementById('quick-guide-close-btn');
+    btn.disabled = !checkbox.checked;
 }
 
 function toggleGuideSteps(guideId) {
@@ -223,6 +269,12 @@ function toggleGuideSteps(guideId) {
 
 function openGuide(guideId) {
     closeWhatsNew();
+    
+    // Hide the specific feature badge if the user viewed its guide
+    const targetPage = guideId.replace('guide-', '');
+    const badge = document.getElementById(`badge-${targetPage}`);
+    if (badge) badge.style.display = 'none';
+    
     // Switch to the guides page by simulating a click on the navigation item
     const guidesNav = document.querySelector('[data-page="guides"]');
     if (guidesNav) guidesNav.click();

@@ -38,6 +38,7 @@
                     <h3>Secure Communications</h3>
                     <p>Exchange data securely with other medical staff.</p>
                     <a class="learn-more-link" onclick="openGuide('guide-messaging')">Learn more</a>
+                    <p class="extension-tip"><strong>Tip:</strong> The latest updates and guides are also available in the ZAS Connect browser extension!</p>
                 </div>
                 <button class="prev-btn" onclick="moveSlide(-1)">&#10094;</button>
                 <button class="next-btn" onclick="moveSlide(1)">&#10095;</button>
@@ -47,7 +48,60 @@
                 <span class="dot" onclick="setSlide(1)"></span>
                 <span class="dot" onclick="setSlide(2)"></span>
             </div>
-            <button class="btn primary" style="margin-top: 20px;" onclick="closeWhatsNew()">Continue to Portal</button>
+            <div id="read-acknowledgement" style="display:none; margin-top: 15px; text-align: left; font-size: 0.9rem; background: var(--zas-light); padding: 10px; border-radius: 6px;">
+                <input type="checkbox" id="read-checkbox" onchange="toggleContinueBtn()" />
+                <label for="read-checkbox" class="custom-checkbox-label">I have read and understood the updates.</label>
+            </div>
+            <button class="btn primary" id="continue-btn" style="margin-top: 20px;" onclick="closeWhatsNew()" disabled>Continue to Portal</button>
+        </div>
+    </div>
+
+    <!-- Quick Guide Modal -->
+    <div id="quick-guide-modal" style="display:none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); align-items: center; justify-content: center; z-index: 2500; backdrop-filter: blur(3px);">
+        <div class="modal-box" style="width: 550px; max-height: 85vh; overflow-y: auto; display: block;">
+            <h2>Quick Step-by-Step Guide</h2>
+            <p style="margin-top: 0; margin-bottom: 20px; font-size: 0.9rem; color: #555;">Here are the step-by-step instructions for this feature.</p>
+            
+            <div id="modal-guide-directory" style="display:none; margin-bottom: 20px; text-align: left;">
+                <h3 style="color: var(--zas-blue); margin: 0 0 8px 0; font-size: 1rem;">Patient Directory</h3>
+                <ol style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text);">
+                    <li style="margin-bottom: 4px;">Navigate to the <strong>Patient Directory</strong> from the sidebar.</li>
+                    <li style="margin-bottom: 4px;">Click on the <strong>Search Patient</strong> input field.</li>
+                    <li style="margin-bottom: 4px;">Type in the patient's Name, ID, or Date of Birth.</li>
+                    <li style="margin-bottom: 4px;">Click the <strong>Search</strong> button.</li>
+                    <li style="margin-bottom: 4px;">Click <strong>View</strong> on the desired patient row to see full details.</li>
+                </ol>
+            </div>
+            
+            <div id="modal-guide-records" style="display:none; margin-bottom: 20px; text-align: left;">
+                <h3 style="color: var(--zas-blue); margin: 0 0 8px 0; font-size: 1rem;">Patient Records</h3>
+                <ol style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text);">
+                    <li style="margin-bottom: 4px;">Go to the <strong>Patient Records</strong> section.</li>
+                    <li style="margin-bottom: 4px;">Click the <strong>+ Update Record</strong> button at the top right.</li>
+                    <li style="margin-bottom: 4px;">Fill in the <strong>Patient ID</strong>.</li>
+                    <li style="margin-bottom: 4px;">Select the <strong>Date</strong>, <strong>Hour</strong>, and <strong>Type</strong>.</li>
+                    <li style="margin-bottom: 4px;">Add clinical information in the <strong>Notes</strong> field.</li>
+                    <li style="margin-bottom: 4px;">Click <strong>Save Record</strong>.</li>
+                </ol>
+            </div>
+
+            <div id="modal-guide-messages" style="display:none; margin-bottom: 20px; text-align: left;">
+                <h3 style="color: var(--zas-blue); margin: 0 0 8px 0; font-size: 1rem;">Secure Communications</h3>
+                <ol style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text);">
+                    <li style="margin-bottom: 4px;">Open the <strong>Secure Communications</strong> tab.</li>
+                    <li style="margin-bottom: 4px;">Click the <strong>New Message</strong> button at the bottom.</li>
+                    <li style="margin-bottom: 4px;">In the modal, enter the recipient's name or department in the <strong>To</strong> field.</li>
+                    <li style="margin-bottom: 4px;">Provide a <strong>Subject</strong> and write your <strong>Message</strong>.</li>
+                    <li style="margin-bottom: 4px;">Click <strong>Send</strong>.</li>
+                </ol>
+            </div>
+
+            <div style="margin-top: 15px; text-align: left; font-size: 0.9rem; background: var(--zas-light); padding: 10px; border-radius: 6px;">
+                <input type="checkbox" id="quick-guide-checkbox" onchange="toggleQuickGuideBtn()" />
+                <label for="quick-guide-checkbox" class="custom-checkbox-label">I have read and understood this guide.</label>
+            </div>
+
+            <button class="btn primary" id="quick-guide-close-btn" style="margin-top: 15px;" onclick="document.getElementById('quick-guide-modal').style.display='none'" disabled>Close</button>
         </div>
     </div>
 
@@ -58,9 +112,9 @@
             <div class="logo">ZAS <span>Connect</span></div>
             <ul>
                 <li class="nav-item active" data-page="dashboard">Dashboard</li>
-                <li class="nav-item" data-page="directory">Patient Directory</li>
-                <li class="nav-item" data-page="records">Patient Records</li>
-                <li class="nav-item" data-page="messages">Secure Communications</li>
+                <li class="nav-item" data-page="directory">Patient Directory <span class="nav-badge" id="badge-directory">1</span></li>
+                <li class="nav-item" data-page="records">Patient Records <span class="nav-badge" id="badge-records">1</span></li>
+                <li class="nav-item" data-page="messages">Secure Communications <span class="nav-badge" id="badge-messages">1</span></li>
                 <li class="nav-item" data-page="guides">Guides & Help</li>
             </ul>
             <div class="user-profile">
