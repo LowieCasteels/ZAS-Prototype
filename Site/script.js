@@ -37,7 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('quick-guide-checkbox').checked = false;
                     document.getElementById('quick-guide-close-btn').disabled = true;
                     
+                    // Hide acknowledgement until last slide
+                    const quickAck = document.getElementById('quick-guide-acknowledgement');
+                    if (quickAck) quickAck.style.display = 'none';
+                    
                     document.getElementById('quick-guide-modal').style.display = 'flex';
+                    
+                    // Initialize carousel for this specific feature guide
+                    showSlides(0, `modal-guide-${targetPage}`);
                 }
             }
 
@@ -209,32 +216,57 @@ function closeWhatsNew() {
     document.getElementById('whats-new-modal').style.display = 'none';
 }
 
-let slideIndex = 0;
+let slideIndexMap = {};
+let activeCarouselId = 'whats-new-modal';
 
 function moveSlide(n) {
-    showSlides(slideIndex += n);
+    let currentIndex = slideIndexMap[activeCarouselId] || 0;
+    showSlides(currentIndex + n, activeCarouselId);
 }
 
 function setSlide(n) {
-    showSlides(slideIndex = n);
+    showSlides(n, activeCarouselId);
 }
 
-function showSlides(n) {
-    const slides = document.getElementsByClassName("slide");
-    const dots = document.getElementsByClassName("dot");
+function showSlides(n, carouselId = 'whats-new-modal') {
+    activeCarouselId = carouselId;
+    if (slideIndexMap[carouselId] === undefined) {
+        slideIndexMap[carouselId] = 0;
+    }
     
-    if (n >= slides.length) { slideIndex = 0 }    
-    if (n < 0) { slideIndex = slides.length - 1 }
+    const container = document.getElementById(carouselId);
+    if (!container) return;
+
+    const slides = container.getElementsByClassName("slide");
+    const dots = container.getElementsByClassName("dot");
+    
+    if (slides.length === 0) return;
+    
+    if (n >= slides.length) { 
+        slideIndexMap[carouselId] = 0; 
+    } else if (n < 0) { 
+        slideIndexMap[carouselId] = slides.length - 1; 
+    } else {
+        slideIndexMap[carouselId] = n;
+    }
     
     for (let i = 0; i < slides.length; i++) { slides[i].classList.remove("active"); }
     for (let i = 0; i < dots.length; i++) { dots[i].classList.remove("active"); }
     
-    if (slides[slideIndex]) slides[slideIndex].classList.add("active");  
-    if (dots[slideIndex]) dots[slideIndex].classList.add("active");
+    slides[slideIndexMap[carouselId]].classList.add("active");  
+    if (dots.length > 0 && dots[slideIndexMap[carouselId]]) {
+        dots[slideIndexMap[carouselId]].classList.add("active");
+    }
     
     // Require user to reach the last slide before showing the checkbox
-    if (slideIndex === slides.length - 1) {
-        document.getElementById('read-acknowledgement').style.display = 'block';
+    if (slideIndexMap[carouselId] === slides.length - 1) {
+        if (carouselId === 'whats-new-modal') {
+            const ack = document.getElementById('read-acknowledgement');
+            if (ack) ack.style.display = 'block';
+        } else {
+            const ack = document.getElementById('quick-guide-acknowledgement');
+            if (ack) ack.style.display = 'block';
+        }
     }
 }
 

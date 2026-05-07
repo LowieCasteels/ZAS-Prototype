@@ -58,45 +58,154 @@
 
     <!-- Quick Guide Modal -->
     <div id="quick-guide-modal" style="display:none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); align-items: center; justify-content: center; z-index: 2500; backdrop-filter: blur(3px);">
-        <div class="modal-box" style="width: 550px; max-height: 85vh; overflow-y: auto; display: block;">
-            <h2>Quick Step-by-Step Guide</h2>
-            <p style="margin-top: 0; margin-bottom: 20px; font-size: 0.9rem; color: #555;">Here are the step-by-step instructions for this feature.</p>
+        <div class="modal-box carousel-box" style="width: 550px;">
+            <h2>Quick Feature Guide</h2>
             
-            <div id="modal-guide-directory" style="display:none; margin-bottom: 20px; text-align: left;">
-                <h3 style="color: var(--zas-blue); margin: 0 0 8px 0; font-size: 1rem;">Patient Directory</h3>
-                <ol style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text);">
-                    <li style="margin-bottom: 4px;">Navigate to the <strong>Patient Directory</strong> from the sidebar.</li>
-                    <li style="margin-bottom: 4px;">Click on the <strong>Search Patient</strong> input field.</li>
-                    <li style="margin-bottom: 4px;">Type in the patient's Name, ID, or Date of Birth.</li>
-                    <li style="margin-bottom: 4px;">Click the <strong>Search</strong> button.</li>
-                    <li style="margin-bottom: 4px;">Click <strong>View</strong> on the desired patient row to see full details.</li>
-                </ol>
-            </div>
-            
-            <div id="modal-guide-records" style="display:none; margin-bottom: 20px; text-align: left;">
-                <h3 style="color: var(--zas-blue); margin: 0 0 8px 0; font-size: 1rem;">Patient Records</h3>
-                <ol style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text);">
-                    <li style="margin-bottom: 4px;">Go to the <strong>Patient Records</strong> section.</li>
-                    <li style="margin-bottom: 4px;">Click the <strong>+ Update Record</strong> button at the top right.</li>
-                    <li style="margin-bottom: 4px;">Fill in the <strong>Patient ID</strong>.</li>
-                    <li style="margin-bottom: 4px;">Select the <strong>Date</strong>, <strong>Hour</strong>, and <strong>Type</strong>.</li>
-                    <li style="margin-bottom: 4px;">Add clinical information in the <strong>Notes</strong> field.</li>
-                    <li style="margin-bottom: 4px;">Click <strong>Save Record</strong>.</li>
-                </ol>
+            <!-- Guide for Patient Directory -->
+            <div id="modal-guide-directory" style="display:none;">
+                <div class="carousel">
+                    <div class="slide active">
+                        <div class="slide-placeholder"><img src="img/Updates/UpdateRecord.png" alt=""></div>
+                        <h3>What's New: Patient Directory</h3>
+                        <p>The Patient Directory has been revamped for faster searching and at-a-glance patient status.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/UpdateRecord/step1.png" alt=""></div>
+                        <h3>Step 1 of 5</h3>
+                        <p>Navigate to the <strong>Patient Directory</strong> from the sidebar.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/UpdateRecord/step2.png" alt=""></div>
+                        <h3>Step 2 of 5</h3>
+                        <p>Click on the <strong>Search Patient</strong> input field.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/UpdateRecord/step3.png" alt=""></div>
+                        <h3>Step 3 of 5</h3>
+                        <p>Type in the patient's Name, ID, or Date of Birth.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/UpdateRecord/step4.png" alt=""></div>
+                        <h3>Step 4 of 5</h3>
+                        <p>Click the <strong>Search</strong> button.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/UpdateRecord/step5.png" alt=""></div>
+                        <h3>Step 5 of 5</h3>
+                        <p>Click <strong>View</strong> on the desired patient row to see full details.</p>
+                    </div>
+                    <button class="prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="next-btn" onclick="moveSlide(1)">&#10095;</button>
+                </div>
+                <div class="slide-indicators">
+                    <span class="dot active" onclick="setSlide(0)"></span>
+                    <span class="dot" onclick="setSlide(1)"></span>
+                    <span class="dot" onclick="setSlide(2)"></span>
+                    <span class="dot" onclick="setSlide(3)"></span>
+                    <span class="dot" onclick="setSlide(4)"></span>
+                    <span class="dot" onclick="setSlide(5)"></span>
+                </div>
             </div>
 
-            <div id="modal-guide-messages" style="display:none; margin-bottom: 20px; text-align: left;">
-                <h3 style="color: var(--zas-blue); margin: 0 0 8px 0; font-size: 1rem;">Secure Communications</h3>
-                <ol style="margin: 0; padding-left: 20px; font-size: 0.9rem; color: var(--text);">
-                    <li style="margin-bottom: 4px;">Open the <strong>Secure Communications</strong> tab.</li>
-                    <li style="margin-bottom: 4px;">Click the <strong>New Message</strong> button at the bottom.</li>
-                    <li style="margin-bottom: 4px;">In the modal, enter the recipient's name or department in the <strong>To</strong> field.</li>
-                    <li style="margin-bottom: 4px;">Provide a <strong>Subject</strong> and write your <strong>Message</strong>.</li>
-                    <li style="margin-bottom: 4px;">Click <strong>Send</strong>.</li>
-                </ol>
+            <!-- Guide for Patient Records -->
+            <div id="modal-guide-records" style="display:none;">
+                <div class="carousel">
+                    <div class="slide active">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord.png" alt=""></div>
+                        <h3>What's New: Patient Records</h3>
+                        <p>Adding and updating clinical notes is now more intuitive, with a clear timeline of all updates.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord/step1.png" alt=""></div>
+                        <h3>Step 1 of 6</h3>
+                        <p>Go to the <strong>Patient Records</strong> section.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord/step2.png" alt=""></div>
+                        <h3>Step 2 of 6</h3>
+                        <p>Click the <strong>+ Update Record</strong> button at the top right.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord/step3.png" alt=""></div>
+                        <h3>Step 3 of 6</h3>
+                        <p>Fill in the <strong>Patient ID</strong>.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord/step4.png" alt=""></div>
+                        <h3>Step 4 of 6</h3>
+                        <p>Select the <strong>Date</strong>, <strong>Hour</strong>, and <strong>Type</strong>.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord/step5.png" alt=""></div>
+                        <h3>Step 5 of 6</h3>
+                        <p>Add clinical information in the <strong>Notes</strong> field.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/PatientRecord/step6.png" alt=""></div>
+                        <h3>Step 6 of 6</h3>
+                        <p>Click <strong>Save Record</strong>.</p>
+                    </div>
+                    <button class="prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="next-btn" onclick="moveSlide(1)">&#10095;</button>
+                </div>
+                <div class="slide-indicators">
+                    <span class="dot active" onclick="setSlide(0)"></span>
+                    <span class="dot" onclick="setSlide(1)"></span>
+                    <span class="dot" onclick="setSlide(2)"></span>
+                    <span class="dot" onclick="setSlide(3)"></span>
+                    <span class="dot" onclick="setSlide(4)"></span>
+                    <span class="dot" onclick="setSlide(5)"></span>
+                    <span class="dot" onclick="setSlide(6)"></span>
+                </div>
             </div>
 
-            <div style="margin-top: 15px; text-align: left; font-size: 0.9rem; background: var(--zas-light); padding: 10px; border-radius: 6px;">
+            <!-- Guide for Secure Communications -->
+            <div id="modal-guide-messages" style="display:none;">
+                <div class="carousel">
+                    <div class="slide active">
+                        <div class="slide-placeholder"><img src="img/Updates/SecureMessaging.png" alt=""></div>
+                        <h3>What's New: Secure Communications</h3>
+                        <p>Exchange data securely with other medical staff without leaving the portal.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/SecureMessaging/step1.png" alt=""></div>
+                        <h3>Step 1 of 5</h3>
+                        <p>Open the <strong>Secure Communications</strong> tab.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/SecureMessaging/step2.png" alt=""></div>
+                        <h3>Step 2 of 5</h3>
+                        <p>Click the <strong>New Message</strong> button at the bottom.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/SecureMessaging/step3.png" alt=""></div>
+                        <h3>Step 3 of 5</h3>
+                        <p>In the modal, enter the recipient's name or department in the <strong>To</strong> field.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/SecureMessaging/step4.png" alt=""></div>
+                        <h3>Step 4 of 5</h3>
+                        <p>Provide a <strong>Subject</strong> and write your <strong>Message</strong>.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-placeholder"><img src="img/Updates/SecureMessaging/step5.png" alt=""></div>
+                        <h3>Step 5 of 5</h3>
+                        <p>Click <strong>Send</strong>.</p>
+                    </div>
+                    <button class="prev-btn" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="next-btn" onclick="moveSlide(1)">&#10095;</button>
+                </div>
+                <div class="slide-indicators">
+                    <span class="dot active" onclick="setSlide(0)"></span>
+                    <span class="dot" onclick="setSlide(1)"></span>
+                    <span class="dot" onclick="setSlide(2)"></span>
+                    <span class="dot" onclick="setSlide(3)"></span>
+                    <span class="dot" onclick="setSlide(4)"></span>
+                    <span class="dot" onclick="setSlide(5)"></span>
+                </div>
+            </div>
+
+            <div id="quick-guide-acknowledgement" style="display:none; margin-top: 15px; text-align: left; font-size: 0.9rem; background: var(--zas-light); padding: 10px; border-radius: 6px;">
                 <input type="checkbox" id="quick-guide-checkbox" onchange="toggleQuickGuideBtn()" />
                 <label for="quick-guide-checkbox" class="custom-checkbox-label">I have read and understood this guide.</label>
             </div>
